@@ -1,4 +1,4 @@
-package com.alberto.test.service.dto;
+package com.alberto.drone.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class AvailableDronesDto {
 
-    private String userName;
-    private String password;
+    private DroneDto drone;
+    private int freeWeight;
 
 }
