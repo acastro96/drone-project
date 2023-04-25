@@ -40,7 +40,7 @@ public class DroneMedicationController {
 
     @PutMapping("/drone-arrived")
     public DroneDto droneArrived(@RequestParam("serialNumber") String serialNumber){
-        return droneMedicationService.returnDrone(serialNumber);
+        return droneMedicationService.droneArrived(serialNumber);
     }
 
 }
