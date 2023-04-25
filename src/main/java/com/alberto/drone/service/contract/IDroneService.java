@@ -9,10 +9,10 @@ public interface IDroneService {
 
     DroneDto saveDrone(DroneDto droneDto);
 
-    DroneDto getDrone(String serialNumber);
+    DroneDto findDroneBySerial(String serialNumber);
 
-    List<AvailableDronesDto> getAvailableDronesForLoading();
+    List<AvailableDronesDto> findAvailableDronesForLoading();
 
-    Integer getDroneBatteryLevel(String serialNumber);
+    Integer findDroneBatteryLevel(String serialNumber);
 
 }

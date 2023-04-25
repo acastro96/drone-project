@@ -16,7 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "Drone")
@@ -46,6 +46,6 @@ public class Drone {
     @OneToMany(mappedBy = "drone")
     @Fetch(FetchMode.JOIN)
     @ToString.Exclude
-    private Set<DroneMedication> droneMedicationLoads;
+    private List<DroneMedication> droneMedicationLoads;
 
 }

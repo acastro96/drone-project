@@ -5,13 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailableDronesDto {
 
-    private DroneDto drone;
+    private String serialNumber;
+    private int weightLimit;
     private int freeWeight;
 
 }

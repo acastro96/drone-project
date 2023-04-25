@@ -5,10 +5,10 @@ import com.alberto.drone.service.dto.MedicationDto;
 
 public interface IMedicationRepository {
 
-    MedicationDto save(Medication medication);
+    Medication save(Medication medication);
 
-    MedicationDto findById(Long id);
+    Medication findById(Long id);
 
-    MedicationDto findByCode(String code);
+    Medication findByCode(String code);
 
 }

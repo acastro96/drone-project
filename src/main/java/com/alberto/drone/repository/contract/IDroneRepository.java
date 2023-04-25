@@ -9,9 +9,13 @@ public interface IDroneRepository {
 
     Drone save(Drone drone);
 
+    List<Drone> saveAll(List<Drone> droneList);
+
     Drone findById(Long id);
 
     Drone findBySerialNumber(String serialNumber);
 
-    List<Drone> findByState(String state);
+    List<Drone> findByStates(List<String> states);
+
+    List<Drone> findAll();
 }

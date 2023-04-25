@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,14 +20,15 @@ public class MedicationDto {
     @Pattern(regexp = "^[a-zA-Z0-9_\\-]*$")
     private String name;
 
-    @NotBlank(message = "The weight is mandatory")
+    @NotNull(message = "The weight is mandatory")
     private int weight;
 
     @NotBlank(message = "The code is mandatory")
     @Pattern(regexp = "^[A-Z0-9_\\-]*$")
     private String code;
 
-    @NotBlank(message = "The image is mandatory")
     private String image;
+
+    private List<DroneMedicationDto> droneMedicationList;
 
 }

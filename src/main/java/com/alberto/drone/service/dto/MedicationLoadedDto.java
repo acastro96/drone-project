@@ -5,16 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DroneMedicationDto {
+public class MedicationLoadedDto {
 
-    private String droneSerialNumber;
-    private String medicationCode;
-    private int medicationWeight;
+    private String code;
+    private String name;
+    private int weight;
     private int quantity;
-    private String state;
 
 }

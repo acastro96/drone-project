@@ -6,10 +6,14 @@ import com.alberto.drone.repository.entity.DroneMedication;
 import com.alberto.drone.repository.jpa.DroneJpa;
 import com.alberto.drone.repository.jpa.DroneMedicationJpa;
 import com.alberto.drone.repository.jpa.MedicationJpa;
+import com.alberto.drone.util.enums.EnumStates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -30,6 +34,12 @@ public class DataLoader implements ApplicationRunner {
                 .batteryCapacity(80)
                 .state("IDLE").build();
 
+        Drone drone2 = Drone.builder().serialNumber("456")
+                .model("Lightweight")
+                .weightLimit(400)
+                .batteryCapacity(70)
+                .state("LOADING").build();
+
         Medication medication = Medication.builder()
                 .name("Ibuprophen")
                 .weight(50)
@@ -37,12 +47,14 @@ public class DataLoader implements ApplicationRunner {
                 .image("image").build();
 
         Drone droneSaved = droneJpa.save(drone);
+        droneJpa.save(drone2);
         Medication medicationSaved = medicationJpa.save(medication);
 
         DroneMedication droneMedication = DroneMedication.builder()
                 .drone(droneSaved)
                 .medication(medicationSaved)
-                .quantity(5).build();
+                .quantity(2)
+                .state("A").build();
 
         DroneMedication droneMedicationSaved = droneMedicationJpa.save(droneMedication);
 
@@ -54,6 +66,9 @@ public class DataLoader implements ApplicationRunner {
         System.out.println(droneFind);
         System.out.println(droneFind.getDroneMedicationLoads());
         System.out.println("===============");
-        System.out.println(droneFind.getDroneMedicationLoads().stream().findFirst().get().getMedication().getWeight());
+
+        List<Drone> droneList = droneJpa.findByStates(Arrays.asList(EnumStates.LOADING.value, EnumStates.IDLE.value));
+        droneList.forEach(System.out::println);
+        //System.out.println(droneFind.getDroneMedicationLoads().stream().findFirst().get().getMedication().getWeight());
     }
 }
