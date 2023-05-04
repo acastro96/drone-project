@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class MedicationService implements IMedicationService {
@@ -32,11 +33,17 @@ public class MedicationService implements IMedicationService {
     @Override
     public MedicationDto save(MedicationDto medicationDto, MultipartFile image) {
 
-        if(image.isEmpty()){
+        if (image.isEmpty()) {
             throw new BusinessException("The image must be send");
         }
 
-        if(!new File(imagesPath).exists()){
+        Optional<Medication> oMedication = medicationRepository.findByCode(medicationDto.getCode());
+        if (oMedication.isPresent()) {
+            throw new BusinessException("This code is already register, please check and try again.");
+        }
+
+        //This should be a File Storage Cloud tool where you can storage the image and get the url
+        if (!new File(imagesPath).exists()) {
             new File(imagesPath).mkdir();
         }
 
@@ -47,15 +54,10 @@ public class MedicationService implements IMedicationService {
 
         File destination = new File(imageFile);
 
-        try(OutputStream os = new FileOutputStream(destination)){
+        try (OutputStream os = new FileOutputStream(destination)) {
             os.write(image.getBytes());
         } catch (IOException e) {
-            throw new BusinessException("There was a problem saving the image for the medication, try again later.");
-        }
-
-        Medication medication = medicationRepository.findByCode(medicationDto.getCode());
-        if(Objects.nonNull(medication)){
-            throw new BusinessException("This code is already register, please check and try again.");
+            throw new BusinessException("There was a problem saving the medication image, try again later.");
         }
 
         medicationDto.setImage(imageFile);
@@ -64,11 +66,15 @@ public class MedicationService implements IMedicationService {
 
     @Override
     public MedicationDto findByCode(String code) {
-        Medication medication = medicationRepository.findByCode(code);
-
-        if(Objects.nonNull(medication)){
-            throw new BusinessException("There is no medication with this code, please check.");
+        if (code.isEmpty() || code.isBlank()) {
+            throw new BusinessException("The medication code cant be null or empty, please check and try again.");
         }
-        return medicationMapper.toDto(medication);
+
+        Optional<Medication> oMedication = medicationRepository.findByCode(code);
+
+        return medicationMapper.toDto(
+                oMedication.orElseThrow(
+                        () -> new BusinessException("There is no Medication register with this code," +
+                                " please check and try again.")));
     }
 }

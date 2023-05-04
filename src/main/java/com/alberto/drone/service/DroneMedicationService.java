@@ -62,7 +62,13 @@ public class DroneMedicationService implements IDroneMedicationService {
                 .sum();
 
         for (MedicationToLoadDto m : loadMedicationDto.getMedications()) {
-            Medication medication = medicationRepository.findByCode(m.getMedicationCode());
+            Optional<Medication> oMedication = medicationRepository.findByCode(m.getMedicationCode());
+
+            Medication medication = oMedication.orElseThrow(
+                    ()-> new BusinessException("There was an error processing the medication with code "
+                            .concat(m.getMedicationCode())
+                            .concat(" please check and try again")));
+
             addingGr = medication.getWeight() * m.getQuantity();
 
             if (currentGr + addingGr > drone.getWeightLimit()) {

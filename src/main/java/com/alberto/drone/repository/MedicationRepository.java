@@ -7,6 +7,8 @@ import com.alberto.drone.repository.jpa.MedicationJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class MedicationRepository implements IMedicationRepository {
 
@@ -19,14 +21,12 @@ public class MedicationRepository implements IMedicationRepository {
     }
 
     @Override
-    public Medication findById(Long id) {
-        return medicationJpa.findById(id)
-                .orElse(null);
+    public Optional<Medication> findById(Long id) {
+        return medicationJpa.findById(id);
     }
 
     @Override
-    public Medication findByCode(String code) {
-        return medicationJpa.findByCode(code)
-                .orElse(null);
+    public Optional<Medication> findByCode(String code) {
+        return medicationJpa.findByCode(code);
     }
 }
