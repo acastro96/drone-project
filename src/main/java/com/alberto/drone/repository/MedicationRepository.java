@@ -21,12 +21,12 @@ public class MedicationRepository implements IMedicationRepository {
     @Override
     public Medication findById(Long id) {
         return medicationJpa.findById(id)
-                .orElseThrow(() -> new BusinessException("There is no medication with this id, please check."));
+                .orElse(null);
     }
 
     @Override
     public Medication findByCode(String code) {
         return medicationJpa.findByCode(code)
-                .orElseThrow(() -> new BusinessException("There is no medication with this code, please check."));
+                .orElse(null);
     }
 }

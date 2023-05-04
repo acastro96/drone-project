@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
+
 public class DroneServiceTest {
 
     @Mock
@@ -34,7 +36,7 @@ public class DroneServiceTest {
 
     @Test
     void saveExistingTest(){
-        Mockito.when(droneRepository.findBySerialNumber(Mockito.anyString())).thenReturn(Drone.builder().build());
+        Mockito.when(droneRepository.findBySerialNumber(Mockito.anyString())).thenReturn(Optional.of(Drone.builder().build()));
         Assertions.assertThrows(BusinessException.class, () -> droneService.saveDrone(droneDto));
     }
 
@@ -64,7 +66,7 @@ public class DroneServiceTest {
 
     @Test
     void findDroneBySerialCorrectTest(){
-        Mockito.when(droneRepository.findBySerialNumber(Mockito.anyString())).thenReturn(Drone.builder().build());
+        Mockito.when(droneRepository.findBySerialNumber(Mockito.anyString())).thenReturn(Optional.of(Drone.builder().build()));
         Mockito.when(droneMapper.toDto(Mockito.any())).thenReturn(droneDto);
 
         Assertions.assertEquals("serialNumber",

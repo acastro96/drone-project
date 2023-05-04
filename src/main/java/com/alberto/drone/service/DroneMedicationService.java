@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +39,10 @@ public class DroneMedicationService implements IDroneMedicationService {
     public LoadMedicationDto loadDrone(LoadMedicationDto loadMedicationDto) {
         int addingGr;
 
-        Drone drone = droneRepository.findBySerialNumber(loadMedicationDto.getDroneSerialNumber());
+        Optional<Drone> oDrone = droneRepository.findBySerialNumber(loadMedicationDto.getDroneSerialNumber());
+
+        Drone drone = oDrone.orElseThrow(() -> new BusinessException("There is no drone registered with this " +
+                "serial number, please check and try again"));
 
         List<MedicationToLoadDto> medicationToLoadDtoListResponse = new ArrayList<>();
 
@@ -110,14 +112,21 @@ public class DroneMedicationService implements IDroneMedicationService {
 
     @Override
     public DroneDto startDelivering(String serialNumber) {
-        Drone drone = droneRepository.findBySerialNumber(serialNumber);
+        Optional<Drone> oDrone = droneRepository.findBySerialNumber(serialNumber);
+
+        Drone drone = oDrone.orElseThrow(
+                () -> new BusinessException("There is no drone with this serial number, please check."));
+
         drone.setState(EnumStates.DELIVERING.value);
         return droneMapper.toDto(droneRepository.save(drone));
     }
 
     @Override
     public DroneDto finishDelivering(String serialNumber) {
-        Drone drone = droneRepository.findBySerialNumber(serialNumber);
+        Optional<Drone> oDrone = droneRepository.findBySerialNumber(serialNumber);
+
+        Drone drone = oDrone.orElseThrow(
+                () -> new BusinessException("There is no drone with this serial number, please check."));
 
         drone.getDroneMedicationLoads().forEach(d -> d.setState("D"));
         droneMedicationRepository.saveAll(drone.getDroneMedicationLoads());
@@ -128,14 +137,22 @@ public class DroneMedicationService implements IDroneMedicationService {
 
     @Override
     public DroneDto returnDrone(String serialNumber) {
-        Drone drone = droneRepository.findBySerialNumber(serialNumber);
+        Optional<Drone> oDrone = droneRepository.findBySerialNumber(serialNumber);
+
+        Drone drone = oDrone.orElseThrow(
+                () -> new BusinessException("There is no drone with this serial number, please check."));
+
         drone.setState(EnumStates.RETURNING.value);
         return droneMapper.toDto(droneRepository.save(drone));
     }
 
     @Override
     public DroneDto droneArrived(String serialNumber) {
-        Drone drone = droneRepository.findBySerialNumber(serialNumber);
+        Optional<Drone> oDrone = droneRepository.findBySerialNumber(serialNumber);
+
+        Drone drone = oDrone.orElseThrow(
+                () -> new BusinessException("There is no drone with this serial number, please check."));
+
         drone.setState(EnumStates.IDLE.value);
         return droneMapper.toDto(droneRepository.save(drone));
     }

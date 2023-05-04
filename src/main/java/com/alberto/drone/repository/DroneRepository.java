@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class DroneRepository implements IDroneRepository {
@@ -26,15 +27,13 @@ public class DroneRepository implements IDroneRepository {
     }
 
     @Override
-    public Drone findById(Long id) {
-        return droneJpa.findById(id)
-                .orElseThrow(() -> new BusinessException("There is no drone with this id, please check."));
+    public Optional<Drone> findById(Long id) {
+        return droneJpa.findById(id);
     }
 
     @Override
-    public Drone findBySerialNumber(String serialNumber) {
-        return droneJpa.findBySerialNumber(serialNumber)
-                .orElseThrow(() -> new BusinessException("There is no drone with this serial number, please check."));
+    public Optional<Drone> findBySerialNumber(String serialNumber) {
+        return droneJpa.findBySerialNumber(serialNumber);
     }
 
     @Override

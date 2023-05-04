@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class DroneService implements IDroneService {
@@ -28,8 +29,8 @@ public class DroneService implements IDroneService {
 
     @Override
     public DroneDto saveDrone(DroneDto droneDto) {
-        Drone drone = droneRepository.findBySerialNumber(droneDto.getSerialNumber());
-        if(Objects.nonNull(drone)){
+        Optional<Drone> oDrone = droneRepository.findBySerialNumber(droneDto.getSerialNumber());
+        if (oDrone.isPresent()) {
             throw new BusinessException("This serial number is already use by a registered drone");
         }
         return droneMapper.toDto(droneRepository.save(droneMapper.toEntity(droneDto)));
@@ -37,14 +38,14 @@ public class DroneService implements IDroneService {
 
     @Override
     public DroneDto findDroneBySerial(String serialNumber) {
-        if(serialNumber.isEmpty()){
+        if (serialNumber.isEmpty()) {
             throw new BusinessException("The serial number is empty, please send it.");
         }
-        Drone drone = droneRepository.findBySerialNumber(serialNumber);
-        if(Objects.isNull(drone)){
-            throw new BusinessException("There is no drone with this serial number, please check.");
-        }
-        return droneMapper.toDto(drone);
+        Optional<Drone> oDrone = droneRepository.findBySerialNumber(serialNumber);
+
+        return droneMapper.toDto(
+                oDrone.orElseThrow(
+                        () -> new BusinessException("There is no drone with this serial number, please check.")));
     }
 
     @Override
@@ -75,7 +76,14 @@ public class DroneService implements IDroneService {
 
     @Override
     public Integer findDroneBatteryLevel(String serialNumber) {
-        return droneRepository.findBySerialNumber(serialNumber).getBatteryCapacity();
+        if (serialNumber.isEmpty()) {
+            throw new BusinessException("The serial number is empty, please send it.");
+        }
+
+        Optional<Drone> oDrone = droneRepository.findBySerialNumber(serialNumber);
+        return oDrone.orElseThrow(
+                        () -> new BusinessException("There is no drone with this serial number, please check."))
+                .getBatteryCapacity();
     }
 
 }

@@ -3,6 +3,7 @@ package com.alberto.drone.repository.contract;
 import com.alberto.drone.repository.entity.Drone;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface IDroneRepository {
@@ -11,9 +12,9 @@ public interface IDroneRepository {
 
     List<Drone> saveAll(List<Drone> droneList);
 
-    Drone findById(Long id);
+    Optional<Drone> findById(Long id);
 
-    Drone findBySerialNumber(String serialNumber);
+    Optional<Drone> findBySerialNumber(String serialNumber);
 
     List<Drone> findByStates(List<String> states);
 
