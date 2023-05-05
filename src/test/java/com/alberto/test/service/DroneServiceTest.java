@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-public class DroneServiceTest {
+class DroneServiceTest {
 
     @Mock
     private IDroneRepository droneRepository;

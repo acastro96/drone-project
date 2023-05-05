@@ -50,25 +50,5 @@ public class DataLoader implements ApplicationRunner {
         droneJpa.save(drone2);
         Medication medicationSaved = medicationJpa.save(medication);
 
-        DroneMedication droneMedication = DroneMedication.builder()
-                .drone(droneSaved)
-                .medication(medicationSaved)
-                .quantity(2)
-                .state("A").build();
-
-        DroneMedication droneMedicationSaved = droneMedicationJpa.save(droneMedication);
-
-        Drone droneFind = droneJpa.findById(droneSaved.getId()).get();
-
-        //System.out.println(droneSaved);
-        System.out.println(medicationSaved);
-        //System.out.println(droneMedicationSaved);
-        System.out.println(droneFind);
-        System.out.println(droneFind.getDroneMedicationLoads());
-        System.out.println("===============");
-
-        List<Drone> droneList = droneJpa.findByStates(Arrays.asList(EnumStates.LOADING.value, EnumStates.IDLE.value));
-        droneList.forEach(System.out::println);
-        //System.out.println(droneFind.getDroneMedicationLoads().stream().findFirst().get().getMedication().getWeight());
-    }
+        }
 }

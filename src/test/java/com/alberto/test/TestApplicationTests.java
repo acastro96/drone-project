@@ -8,6 +8,7 @@ class TestApplicationTests {
 
 	@Test
 	void contextLoads() {
+		throw new RuntimeException("Not implemented");
 	}
 
 }

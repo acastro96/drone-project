@@ -1,6 +1,5 @@
 package com.alberto.drone.repository;
 
-import com.alberto.drone.exception.BusinessException;
 import com.alberto.drone.repository.contract.IMedicationRepository;
 import com.alberto.drone.repository.entity.Medication;
 import com.alberto.drone.repository.jpa.MedicationJpa;

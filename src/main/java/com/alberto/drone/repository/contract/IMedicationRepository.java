@@ -1,7 +1,6 @@
 package com.alberto.drone.repository.contract;
 
 import com.alberto.drone.repository.entity.Medication;
-import com.alberto.drone.service.dto.MedicationDto;
 
 import java.util.Optional;
 
