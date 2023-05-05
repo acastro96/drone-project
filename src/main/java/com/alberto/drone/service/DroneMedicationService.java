@@ -35,6 +35,8 @@ public class DroneMedicationService implements IDroneMedicationService {
     @Autowired
     private IDroneMedicationRepository droneMedicationRepository;
 
+    private static final String FIND_DRONE_ERROR = "There is no drone with this serial number, please check.";
+
     @Override
     public LoadMedicationDto loadDrone(LoadMedicationDto loadMedicationDto) {
         int addingGr;
@@ -121,7 +123,7 @@ public class DroneMedicationService implements IDroneMedicationService {
         Optional<Drone> oDrone = droneRepository.findBySerialNumber(serialNumber);
 
         Drone drone = oDrone.orElseThrow(
-                () -> new BusinessException("There is no drone with this serial number, please check."));
+                () -> new BusinessException(FIND_DRONE_ERROR));
 
         drone.setState(EnumStates.DELIVERING.value);
         return droneMapper.toDto(droneRepository.save(drone));
@@ -132,7 +134,7 @@ public class DroneMedicationService implements IDroneMedicationService {
         Optional<Drone> oDrone = droneRepository.findBySerialNumber(serialNumber);
 
         Drone drone = oDrone.orElseThrow(
-                () -> new BusinessException("There is no drone with this serial number, please check."));
+                () -> new BusinessException(FIND_DRONE_ERROR));
 
         drone.getDroneMedicationLoads().forEach(d -> d.setState("D"));
         droneMedicationRepository.saveAll(drone.getDroneMedicationLoads());
@@ -146,7 +148,7 @@ public class DroneMedicationService implements IDroneMedicationService {
         Optional<Drone> oDrone = droneRepository.findBySerialNumber(serialNumber);
 
         Drone drone = oDrone.orElseThrow(
-                () -> new BusinessException("There is no drone with this serial number, please check."));
+                () -> new BusinessException(FIND_DRONE_ERROR));
 
         drone.setState(EnumStates.RETURNING.value);
         return droneMapper.toDto(droneRepository.save(drone));
@@ -157,7 +159,7 @@ public class DroneMedicationService implements IDroneMedicationService {
         Optional<Drone> oDrone = droneRepository.findBySerialNumber(serialNumber);
 
         Drone drone = oDrone.orElseThrow(
-                () -> new BusinessException("There is no drone with this serial number, please check."));
+                () -> new BusinessException(FIND_DRONE_ERROR));
 
         drone.setState(EnumStates.IDLE.value);
         return droneMapper.toDto(droneRepository.save(drone));
